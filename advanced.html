@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 15px;
+            color: white;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #results {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .result-item {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+    <script>
+        async function performSearch() {
+            const fields = ['summary', 'function', 'phy_effect', 'structure', 'behaviour', 'action', 'state'];
+            const queryParams = fields.map(field => {
+                const value = document.getElementById(field).value.trim();
+                return `${encodeURIComponent(field)}=${encodeURIComponent(value)}`;
+            }).join('&');
+
+            try {
+                const response = await fetch(`http://127.0.0.1:5000/search?${queryParams}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                const resultDisplay = document.getElementById('results');
+                resultDisplay.innerHTML = '';
+                data.forEach(item => {
+                    const content = document.createElement('div');
+                    content.className = 'result-item';
+                    content.innerHTML = `<strong>Match Score:</strong> ${item.score}%
+                    <br><strong>File ID:</strong> ${item.file_id}<br>
+<strong>File Name:</strong> ${item.file_name}<br>
+<strong>Folder Name:</strong> ${item.folder_name}<br>
+<strong>Summary:</strong> ${item.summary}<br>
+<strong>Action:</strong> ${item.action}<br>
+<strong>State:</strong> ${item.state}`;
+                    resultDisplay.appendChild(content);
+                });
+            } catch (error) {
+                document.getElementById('results').textContent = 'Failed to fetch results: ' + error.message;
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Advanced Search Form</h1>
+    <form onsubmit="event.preventDefault(); performSearch();">
+        <div>
+            <label for="summary">Summary:</label>
+            <input type="text" id="summary" name="summary">
+        </div>
+        <div>
+            <label for="function">Function:</label>
+            <input type="text" id="function" name="function">
+        </div>
+        <div>
+            <label for="phy_effect">Physical Effect:</label>
+            <input type="text" id="phy_effect" name="phy_effect">
+        </div>
+        <div>
+            <label for="structure">Structure:</label>
+            <input type="text" id="structure" name="structure">
+        </div>
+        <div>
+            <label for="behaviour">Behaviour:</label>
+            <input type="text" id="behaviour" name="behaviour">
+        </div>
+        <div>
+            <label for="action">Action:</label>
+            <input type="text" id="action" name="action">
+        </div>
+        <div>
+            <label for="state">State:</label>
+            <input type="text" id="state" name="state">
+        </div>
+        <div>
+            <button type="submit">Search</button>
+        </div>
+    </form>
+    <div id="results"></div>
+</body>
+</html>
