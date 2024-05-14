@@ -4,10 +4,10 @@ the database is updated via python script which adds the data into the database 
 
 ## The project includes the following key files and scripts:
 1. flaskapp.py:
-  1. Handles HTTP requests and provides endpoints for searching the database.
-  2. Uses fuzzy matching to find relevant records based on search inputs.
-  3. Configures CORS to allow cross-origin requests.
-  4. Connects to a PostgreSQL database to retrieve and search through file records.
+      1. Handles HTTP requests and provides endpoints for searching the database.
+      2. Uses fuzzy matching to find relevant records based on search inputs.
+      3. Configures CORS to allow cross-origin requests.
+      4. Connects to a PostgreSQL database to retrieve and search through file records.
 2. Databaseinserter.py
   1. Defines the structure of the database, creating tables for folders (MAIN_FOLDER) and files (FILE).
   2. Reads from a JSON file (file_structure.json) to populate the database with initial data.
