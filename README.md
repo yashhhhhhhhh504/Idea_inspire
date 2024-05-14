@@ -21,4 +21,4 @@ the database is updated via python script which adds the data into the database 
 
 ## How to initiate the backend?
 start by initiating the database 
-    ``` python3 databaseinserter.py ``` 
+    ``` python3 databaseinserter.py ```  this creates the database and adds the contents from the file Database folder which has all the models, execute run.py which will run in the background and will add any models newly generated 
